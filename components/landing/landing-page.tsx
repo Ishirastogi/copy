@@ -65,19 +65,16 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo and Location */}
-            <div className="flex items-center gap-8">
-              <h1 className="text-2xl font-bold text-gray-900">FoodWallah</h1>
-              <button className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1">
-                Ganganagar
-                <span className="text-xs">▼</span>
-              </button>
-            </div>
+            <h1 className="text-2xl font-bold text-gray-900">FoodWallah</h1>
 
-            {/* Search, Auth and Cart */}
+            {/* Search, Location, Auth and Cart */}
             <div className="flex items-center gap-4">
               <button onClick={() => setShowSearch(true)} className="text-gray-600 hover:text-gray-900">
                 <Search className="w-5 h-5" />
+              </button>
+              <button className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1">
+                Ganganagar
+                <span className="text-xs">▼</span>
               </button>
               {isLoggedIn && user ? (
                 <>
@@ -100,7 +97,11 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
       </header>
 
       <div className="w-full h-48 md:h-64 lg:h-80 bg-gradient-to-r from-orange-50 to-orange-100 relative overflow-hidden">
-        <img src="/delicious-food-collage-with-pizza-pasta-sushi-burg.jpg" alt="Delicious Food" className="w-full h-full object-cover" />
+        <img
+          src="/delicious-food-collage-with-pizza-pasta-sushi-burg.jpg"
+          alt="Delicious Food"
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Search Modal */}
