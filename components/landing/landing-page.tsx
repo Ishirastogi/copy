@@ -1,15 +1,26 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useAuth } from "@/context/auth-context"
-import { ShoppingCart, LogOut, Search, X } from "lucide-react"
+import { ShoppingCart, LogOut, Search, X, ChevronLeft, ChevronRight } from "lucide-react"
 import RestaurantCard from "./restaurant-card"
 
 interface LandingPageProps {
   onSelectRestaurant: (restaurant: any) => void
 }
 
-const categories = ["Pizzas", "Rolls", "Momos", "Noodles", "Cakes", "Burgers", "Shakes", "Biryani"]
+const categories = [
+  { name: "Pizzas", image: "/delicious-pizza-slice.jpg" },
+  { name: "Rolls", image: "/wrap-roll-food.jpg" },
+  { name: "Momos", image: "/steamed-momos-dumplings.jpg" },
+  { name: "Noodles", image: "/noodles-bowl.jpg" },
+  { name: "Cakes", image: "/chocolate-cake-slice.png" },
+  { name: "Burgers", image: "/burger-with-cheese.jpg" },
+  { name: "Shakes", image: "/milkshake-drink.jpg" },
+  { name: "Biryani", image: "/biryani-rice-bowl.jpg" },
+  { name: "Sandwiches", image: "/sandwich-food.jpg" },
+  { name: "Pasta", image: "/pasta-dish.jpg" },
+]
 
 const restaurants = [
   {
@@ -58,7 +69,23 @@ const restaurants = [
 export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [showSearch, setShowSearch] = useState(false)
+  const [activePage, setActivePage] = useState(0)
+  const [activeFilterPage, setActiveFilterPage] = useState(0)
   const { isLoggedIn, user, logout } = useAuth()
+  const categoryScrollRef = useRef<HTMLDivElement>(null)
+
+  const scrollToPage = (pageIndex: number) => {
+    if (categoryScrollRef.current) {
+      const containerWidth = categoryScrollRef.current.offsetWidth
+      categoryScrollRef.current.scrollTo({
+        left: pageIndex * containerWidth,
+        behavior: "smooth",
+      })
+      setActivePage(pageIndex)
+    }
+  }
+
+  const totalPages = Math.ceil(categories.length / 4)
 
   return (
     <div className="min-h-screen bg-white">
@@ -102,6 +129,9 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
           alt="Delicious Food"
           className="w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-wider">FOOD WALLAH</h1>
+        </div>
       </div>
 
       {/* Search Modal */}
@@ -135,42 +165,95 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-12">
-          <p className="text-xl text-gray-700 mb-8 text-left">Hey! What's on your mind</p>
+          <div className="flex items-center justify-between mb-8">
+            <p className="text-xl text-gray-700 text-left">Hey! What's on your mind</p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => scrollToPage(Math.max(0, activePage - 1))}
+                disabled={activePage === 0}
+                className={`w-10 h-10 rounded-full transition-colors flex items-center justify-center ${
+                  activePage === 0 ? "bg-orange-200 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
+                }`}
+                aria-label="Previous page"
+              >
+                <ChevronLeft className="w-5 h-5 text-white" />
+              </button>
+              <button
+                onClick={() => scrollToPage(Math.min(totalPages - 1, activePage + 1))}
+                disabled={activePage === totalPages - 1}
+                className={`w-10 h-10 rounded-full transition-colors flex items-center justify-center ${
+                  activePage === totalPages - 1
+                    ? "bg-orange-200 cursor-not-allowed"
+                    : "bg-orange-500 hover:bg-orange-600"
+                }`}
+                aria-label="Next page"
+              >
+                <ChevronRight className="w-5 h-5 text-white" />
+              </button>
+            </div>
+          </div>
 
           {/* Categories Scroll */}
-          <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
-            {categories.map((category, index) => (
-              <div key={index} className="flex flex-col items-center gap-2 flex-shrink-0 cursor-pointer group">
-                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                  <span className="text-3xl">{getCategoryIcon(category)}</span>
+          <div className="relative">
+            <div
+              ref={categoryScrollRef}
+              className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {categories.map((category, index) => (
+                <div key={index} className="flex flex-col items-center gap-3 flex-shrink-0 cursor-pointer group">
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-100 group-hover:border-orange-400 transition-all shadow-md">
+                    <img
+                      src={category.image || "/placeholder.svg"}
+                      alt={category.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">{category.name}</span>
                 </div>
-                <span className="text-sm font-medium text-gray-700">{category}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
+        <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+          Restaurant with online food delivery in Ganga Nagar
+        </h2>
+
         {/* Filters Bar */}
-        <div className="flex items-center gap-4 mb-6">
-          <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-2">
-            Price Range
-            <span className="text-xs">▼</span>
-          </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
-            Restaurant Type
-          </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
-            Filters ✓
-          </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
-            Sort
-          </button>
-          <div className="ml-auto flex items-center gap-2">
-            <button className="w-8 h-8 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50">
-              ←
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-4">
+            <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center gap-2">
+              Price Range
+              <span className="text-xs">▼</span>
             </button>
-            <button className="w-8 h-8 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50">
-              →
+            <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Restaurant Type
+            </button>
+            <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Filters ✓
+            </button>
+            <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Sort
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveFilterPage(Math.max(0, activeFilterPage - 1))}
+              disabled={activeFilterPage === 0}
+              className={`w-10 h-10 rounded-full transition-colors flex items-center justify-center ${
+                activeFilterPage === 0 ? "bg-orange-200 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
+              }`}
+              aria-label="Previous filter page"
+            >
+              <ChevronLeft className="w-5 h-5 text-white" />
+            </button>
+            <button
+              onClick={() => setActiveFilterPage(activeFilterPage + 1)}
+              className="w-10 h-10 rounded-full bg-orange-200 hover:bg-orange-300 transition-colors flex items-center justify-center"
+              aria-label="Next filter page"
+            >
+              <ChevronRight className="w-5 h-5 text-white" />
             </button>
           </div>
         </div>
