@@ -1,26 +1,34 @@
-"use client"
+"use client";
 
-import { useState, useRef } from "react"
-import { useAuth } from "@/context/auth-context"
-import { ShoppingCart, LogOut, Search, X, ChevronLeft, ChevronRight } from "lucide-react"
-import RestaurantCard from "./restaurant-card"
+import { useState, useRef } from "react";
+import Image from "next/image";
+import { useAuth } from "@/context/auth-context";
+import {
+  ShoppingCart,
+  LogOut,
+  Search,
+  X,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import RestaurantCard from "./restaurant-card";
 
 interface LandingPageProps {
-  onSelectRestaurant: (restaurant: any) => void
+  onSelectRestaurant: (restaurant: any) => void;
 }
 
 const categories = [
-  { name: "Pizzas", image: "/delicious-pizza-slice.jpg" },
-  { name: "Rolls", image: "/wrap-roll-food.jpg" },
-  { name: "Momos", image: "/steamed-momos-dumplings.jpg" },
-  { name: "Noodles", image: "/noodles-bowl.jpg" },
-  { name: "Cakes", image: "/chocolate-cake-slice.png" },
-  { name: "Burgers", image: "/burger-with-cheese.jpg" },
-  { name: "Shakes", image: "/milkshake-drink.jpg" },
-  { name: "Biryani", image: "/biryani-rice-bowl.jpg" },
-  { name: "Sandwiches", image: "/sandwich-food.jpg" },
-  { name: "Pasta", image: "/pasta-dish.jpg" },
-]
+  { name: "Pizzas", image: "/pizza.jpg" },
+  { name: "Rolls", image: "/rolls.jpg" },
+  { name: "Momos", image: "/momos.jpg" },
+  { name: "Noodles", image: "/noodles.jpg" },
+  { name: "Cakes", image: "/cake.jpg" },
+  { name: "Burgers", image: "/burger.jpg" },
+  { name: "Shakes", image: "/shakes.jpg" },
+  { name: "Biryani", image: "/biryani.jpg" },
+  { name: "Sandwiches", image: "/sandwich.jpg" },
+  { name: "Pasta", image: "/pasta.jpg" },
+];
 
 const restaurants = [
   {
@@ -29,12 +37,39 @@ const restaurants = [
     cuisine: "Punjabi, Home Food",
     location: "Raj Nagar",
     price: "Rs. 1000 for two",
-    image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&h=300&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&h=300&fit=crop",
     items: [
-      { id: 1, name: "Bruschetta", price: 450, discount: "Rs 1000 for two", veg: true },
-      { id: 2, name: "Garlic Bread", price: 450, discount: "Rs 1000 for two", veg: true, tag: "Customise" },
-      { id: 3, name: "Margherita Pizza", price: 450, discount: "Rs 1000 for two", veg: false, tag: "Spicy" },
-      { id: 4, name: "Spaghetti Carbonara", price: 450, discount: "Rs 1000 for two", veg: false },
+      {
+        id: 1,
+        name: "Bruschetta",
+        price: 450,
+        discount: "Rs 1000 for two",
+        veg: true,
+      },
+      {
+        id: 2,
+        name: "Garlic Bread",
+        price: 450,
+        discount: "Rs 1000 for two",
+        veg: true,
+        tag: "Customise",
+      },
+      {
+        id: 3,
+        name: "Margherita Pizza",
+        price: 450,
+        discount: "Rs 1000 for two",
+        veg: false,
+        tag: "Spicy",
+      },
+      {
+        id: 4,
+        name: "Spaghetti Carbonara",
+        price: 450,
+        discount: "Rs 1000 for two",
+        veg: false,
+      },
     ],
   },
   {
@@ -43,7 +78,8 @@ const restaurants = [
     cuisine: "Punjabi, Home Food",
     location: "Raj Nagar",
     price: "Rs. 1000 for two",
-    image: "https://images.unsplash.com/photo-1628840042765-356cda07f4ee?w=400&h=300&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop",
     items: [],
   },
   {
@@ -52,7 +88,8 @@ const restaurants = [
     cuisine: "Punjabi, Home Food",
     location: "Raj Nagar",
     price: "Rs. 1000 for two",
-    image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
     items: [],
   },
   {
@@ -61,31 +98,32 @@ const restaurants = [
     cuisine: "Punjabi, Home Food",
     location: "Raj Nagar",
     price: "Rs. 1000 for two",
-    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop",
     items: [],
   },
-]
+];
 
 export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [showSearch, setShowSearch] = useState(false)
-  const [activePage, setActivePage] = useState(0)
-  const [activeFilterPage, setActiveFilterPage] = useState(0)
-  const { isLoggedIn, user, logout } = useAuth()
-  const categoryScrollRef = useRef<HTMLDivElement>(null)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const [activePage, setActivePage] = useState(0);
+  const [activeFilterPage, setActiveFilterPage] = useState(0);
+  const { isLoggedIn, user, logout } = useAuth();
+  const categoryScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToPage = (pageIndex: number) => {
     if (categoryScrollRef.current) {
-      const containerWidth = categoryScrollRef.current.offsetWidth
+      const containerWidth = categoryScrollRef.current.offsetWidth;
       categoryScrollRef.current.scrollTo({
         left: pageIndex * containerWidth,
         behavior: "smooth",
-      })
-      setActivePage(pageIndex)
+      });
+      setActivePage(pageIndex);
     }
-  }
+  };
 
-  const totalPages = Math.ceil(categories.length / 4)
+  const totalPages = Math.ceil(categories.length / 4);
 
   return (
     <div className="min-h-screen bg-white">
@@ -96,7 +134,10 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
 
             {/* Search, Location, Auth and Cart */}
             <div className="flex items-center gap-4">
-              <button onClick={() => setShowSearch(true)} className="text-gray-600 hover:text-gray-900">
+              <button
+                onClick={() => setShowSearch(true)}
+                className="text-gray-600 hover:text-gray-900"
+              >
                 <Search className="w-5 h-5" />
               </button>
               <button className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1">
@@ -105,7 +146,9 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
               </button>
               {isLoggedIn && user ? (
                 <>
-                  <span className="text-sm font-medium text-gray-700">Hi, {user.firstName}</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Hi, {user.firstName}
+                  </span>
                   <button
                     onClick={logout}
                     className="text-gray-600 hover:text-red-500 text-sm font-medium flex items-center gap-1"
@@ -115,7 +158,9 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
                   </button>
                 </>
               ) : (
-                <button className="text-gray-900 hover:text-orange-500 text-sm font-medium">SignIn</button>
+                <button className="text-gray-900 hover:text-orange-500 text-sm font-medium">
+                  SignIn
+                </button>
               )}
               <ShoppingCart className="w-6 h-6 text-gray-900 cursor-pointer" />
             </div>
@@ -124,13 +169,15 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
       </header>
 
       <div className="w-full h-48 md:h-64 lg:h-80 bg-gradient-to-r from-orange-50 to-orange-100 relative overflow-hidden">
-        <img
-          src="/delicious-food-collage-with-pizza-pasta-sushi-burg.jpg"
-          alt="Delicious Food"
-          className="w-full h-full object-cover"
+        <Image
+          src="/banner.png"
+          alt="Food banner"
+          fill
+          priority
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-wider">FOOD WALLAH</h1>
+          {/* <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-wider">FOOD WALLAH</h1> */}
         </div>
       </div>
 
@@ -140,7 +187,9 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
           <div className="border-b border-gray-200 px-4 py-3">
             <div className="max-w-7xl mx-auto flex items-center gap-3">
               <Search className="w-5 h-5 text-gray-500 flex-shrink-0" />
-              <span className="text-gray-700 font-medium whitespace-nowrap">Search For:</span>
+              <span className="text-gray-700 font-medium whitespace-nowrap">
+                Search For:
+              </span>
               <input
                 type="text"
                 placeholder="your search query"
@@ -150,14 +199,19 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
                 autoFocus
               />
               <button className="text-gray-500 hover:text-gray-700">→</button>
-              <button onClick={() => setShowSearch(false)} className="text-gray-500 hover:text-gray-700">
+              <button
+                onClick={() => setShowSearch(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
           </div>
           {/* Search results area */}
           <div className="max-w-7xl mx-auto px-4 py-8">
-            <p className="text-gray-500 text-sm">Start typing to search restaurants, cuisines, or dishes...</p>
+            <p className="text-gray-500 text-sm">
+              Start typing to search restaurants, cuisines, or dishes...
+            </p>
           </div>
         </div>
       )}
@@ -166,20 +220,26 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-12">
           <div className="flex items-center justify-between mb-8">
-            <p className="text-xl text-gray-700 text-left">Hey! What's on your mind</p>
+            <p className="text-xl text-gray-700 text-left">
+              Hey! What's on your mind
+            </p>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => scrollToPage(Math.max(0, activePage - 1))}
                 disabled={activePage === 0}
                 className={`w-10 h-10 rounded-full transition-colors flex items-center justify-center ${
-                  activePage === 0 ? "bg-orange-200 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
+                  activePage === 0
+                    ? "bg-orange-200 cursor-not-allowed"
+                    : "bg-orange-500 hover:bg-orange-600"
                 }`}
                 aria-label="Previous page"
               >
                 <ChevronLeft className="w-5 h-5 text-white" />
               </button>
               <button
-                onClick={() => scrollToPage(Math.min(totalPages - 1, activePage + 1))}
+                onClick={() =>
+                  scrollToPage(Math.min(totalPages - 1, activePage + 1))
+                }
                 disabled={activePage === totalPages - 1}
                 className={`w-10 h-10 rounded-full transition-colors flex items-center justify-center ${
                   activePage === totalPages - 1
@@ -201,7 +261,10 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {categories.map((category, index) => (
-                <div key={index} className="flex flex-col items-center gap-3 flex-shrink-0 cursor-pointer group">
+                <div
+                  key={index}
+                  className="flex flex-col items-center gap-3 flex-shrink-0 cursor-pointer group"
+                >
                   <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-100 group-hover:border-orange-400 transition-all shadow-md">
                     <img
                       src={category.image || "/placeholder.svg"}
@@ -209,7 +272,9 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                     />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">{category.name}</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    {category.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -239,10 +304,14 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setActiveFilterPage(Math.max(0, activeFilterPage - 1))}
+              onClick={() =>
+                setActiveFilterPage(Math.max(0, activeFilterPage - 1))
+              }
               disabled={activeFilterPage === 0}
               className={`w-10 h-10 rounded-full transition-colors flex items-center justify-center ${
-                activeFilterPage === 0 ? "bg-orange-200 cursor-not-allowed" : "bg-orange-500 hover:bg-orange-600"
+                activeFilterPage === 0
+                  ? "bg-orange-200 cursor-not-allowed"
+                  : "bg-orange-500 hover:bg-orange-600"
               }`}
               aria-label="Previous filter page"
             >
@@ -280,8 +349,12 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">FoodWallah</h3>
-              <p className="text-sm text-gray-600">© 2025 Dine Order. All Rights Reserved</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                FoodWallah
+              </h3>
+              <p className="text-sm text-gray-600">
+                © 2025 Dine Order. All Rights Reserved
+              </p>
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
@@ -342,7 +415,7 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
 function getCategoryIcon(category: string): string {
@@ -355,6 +428,6 @@ function getCategoryIcon(category: string): string {
     Burgers: "🍔",
     Shakes: "🥤",
     Biryani: "🍛",
-  }
-  return icons[category] || "🍽️"
+  };
+  return icons[category] || "🍽️";
 }
