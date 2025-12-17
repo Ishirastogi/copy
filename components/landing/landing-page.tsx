@@ -220,7 +220,7 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-12">
           <div className="flex items-center justify-between mb-8">
-            <p className="text-xl text-gray-700 text-left">
+            <p className="text-2xl font-semibold text-gray-900 text-left">
               Hey! What's on your mind
             </p>
             <div className="flex items-center gap-2">
