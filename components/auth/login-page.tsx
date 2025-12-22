@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../lib/firebase";
 import { FcGoogle } from "react-icons/fc";
 
 interface LoginPageProps {
@@ -10,14 +8,9 @@ interface LoginPageProps {
 }
 
 export default function LoginPage({ onContinuePhone }: LoginPageProps) {
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-      console.log("Google User:", user);
-    } catch (error) {
-      console.error("Google Login Error:", error);
-    }
+  const handleGoogleLogin = () => {
+    console.log("Google login clicked");
+    // Add your Google auth logic here later
   };
 
   return (
