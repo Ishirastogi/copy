@@ -29,21 +29,21 @@ export default function PhoneNumberPage({ onSubmit }: PhoneNumberPageProps) {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">First Name</label>
+              {/* <label className="block text-gray-700 font-semibold mb-2">First Name</label> */}
               <Input
                 placeholder="First Name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="h-12 text-lg border-b-2 border-gray-300 bg-transparent focus:border-orange-500 focus:ring-0"
+                className="h-12 text-lg border-b-2 border-gray-300 bg-transparent focus:border-orange-500 focus:ring-0 rounded-[26px]"
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">Last Name</label>
+              {/* <label className="block text-gray-700 font-semibold mb-2">Last Name</label> */}
               <Input
                 placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="h-12 text-lg border-b-2 border-gray-300 bg-transparent focus:border-orange-500 focus:ring-0"
+                className="h-12 text-lg border-b-2 border-gray-300 bg-transparent focus:border-orange-500 focus:ring-0 rounded-[26px]"
               />
             </div>
           </div>

@@ -22,7 +22,7 @@ export default function RestaurantCard({ restaurant, onClick }: RestaurantCardPr
 
       <p className="text-sm text-gray-600 mb-3">{restaurant.location}</p>
 
-      <p className="text-sm font-semibold text-gray-700">{restaurant.price}</p>
+      <p className="text-sm font-semibold text-red-700">{restaurant.price}</p>
     </div>
   )
 }

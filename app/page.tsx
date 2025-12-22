@@ -11,13 +11,15 @@ import CartPage from "@/components/checkout/cart-page"
 import CheckoutPage from "@/components/checkout/checkout-page"
 import ThankYouPage from "@/components/checkout/thank-you-page"
 import TrackOrderPage from "@/components/checkout/track-order-page"
+import CategoryPage from "@/components/category/category";
 
 export default function Home() {
   const { login } = useAuth()
   const [authStep, setAuthStep] = useState<
-    "login" | "phone" | "otp" | "landing" | "restaurant" | "cart" | "checkout" | "thank-you" | "track-order"
+    "login" | "phone" | "otp" | "landing" | "restaurant" | "cart" | "checkout" | "thank-you" | "track-order" | "category"
   >("login")
   const [userPhone, setUserPhone] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [userName, setUserName] = useState({ firstName: "", lastName: "" })
   const [selectedRestaurant, setSelectedRestaurant] = useState<any>(null)
 
@@ -47,6 +49,10 @@ export default function Home() {
     setAuthStep("landing")
   }
 
+  const handleSelectCategory = (categoryName: string) => {
+  setSelectedCategory(categoryName);
+  setAuthStep("category");
+};
   const handleGoToCart = () => {
     setAuthStep("cart")
   }
@@ -68,7 +74,19 @@ export default function Home() {
       {authStep === "login" && <LoginPage onContinuePhone={() => setAuthStep("phone")} />}
       {authStep === "phone" && <PhoneNumberPage onSubmit={handlePhoneSubmit} />}
       {authStep === "otp" && <OtpVerificationPage phone={userPhone} onVerify={handleOtpVerify} />}
-      {authStep === "landing" && <LandingPage onSelectRestaurant={handleSelectRestaurant} />}
+      {authStep === "landing" && (
+        <LandingPage 
+          onSelectRestaurant={handleSelectRestaurant} 
+          onSelectCategory={handleSelectCategory} 
+        />
+      )}
+
+      {authStep === "category" && (
+        <CategoryPage 
+          categoryName={selectedCategory} 
+          onBack={handleBackToLanding} 
+        />
+      )}
       {authStep === "restaurant" && selectedRestaurant && (
         <RestaurantPage restaurant={selectedRestaurant} onBack={handleBackToLanding} onViewCart={handleGoToCart} />
       )}

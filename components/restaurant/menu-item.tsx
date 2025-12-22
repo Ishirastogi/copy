@@ -47,7 +47,7 @@ export default function MenuItem({ item, onAddItem }: MenuItemProps) {
 
         <div className="mt-3">
           <p className="font-semibold text-gray-900">Rs. {item.price}</p>
-          <p className="text-sm text-red-500">{item.discount}</p>
+          {/* <p className="text-sm text-red-500">{item.discount}</p> */}
         </div>
       </div>
 

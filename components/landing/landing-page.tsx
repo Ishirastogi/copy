@@ -15,6 +15,7 @@ import RestaurantCard from "./restaurant-card";
 
 interface LandingPageProps {
   onSelectRestaurant: (restaurant: any) => void;
+  onSelectCategory: (categoryName: string) => void;
 }
 
 const categories = [
@@ -104,7 +105,7 @@ const restaurants = [
   },
 ];
 
-export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
+export default function LandingPage({ onSelectRestaurant, onSelectCategory }: LandingPageProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [activePage, setActivePage] = useState(0);
@@ -263,6 +264,7 @@ export default function LandingPage({ onSelectRestaurant }: LandingPageProps) {
               {categories.map((category, index) => (
                 <div
                   key={index}
+                  onClick={() => onSelectCategory(category.name)} // Trigger navigation
                   className="flex flex-col items-center gap-3 flex-shrink-0 cursor-pointer group"
                 >
                   <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-100 group-hover:border-orange-400 transition-all shadow-md">
