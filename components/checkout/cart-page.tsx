@@ -1,15 +1,15 @@
 "use client"
 import { useCart } from "@/context/cart-context"
 import { useAuth } from "@/context/auth-context"
-import { Minus, Plus, Trash2 } from "lucide-react"
+import { Minus, Plus, Trash2, ChevronLeft } from "lucide-react"
 
 interface CartPageProps {
   onCheckout: () => void
-  onBackToLanding: () => void
+  onBackToRestaurant: () => void
   onLogin: () => void
 }
 
-export default function CartPage({ onCheckout, onBackToLanding, onLogin }: CartPageProps) {
+export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: CartPageProps) {
   const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart()
   const { isLoggedIn, user } = useAuth()
 
@@ -23,6 +23,14 @@ export default function CartPage({ onCheckout, onBackToLanding, onLogin }: CartP
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
+           {/* Back Button */}
+    <button
+      onClick={onBackToRestaurant}
+     className="flex items-center gap-2 text-gray-700 hover:text-black transition"
+                 >
+                   <ChevronLeft className="w-5 h-5" />
+                   <span className="text-sm font-medium">Back</span>
+                 </button>
           <h1 className="text-3xl font-bold text-gray-900">Secure Checkout</h1>
         </div>
       </header>
@@ -30,7 +38,7 @@ export default function CartPage({ onCheckout, onBackToLanding, onLogin }: CartP
       <div className="mx-auto max-w-7xl px-6 py-8">
         {/* Breadcrumb */}
         <div className="mb-8 text-sm text-gray-600">
-          <button onClick={onBackToLanding} className="hover:text-orange-500">
+          <button className="hover:text-orange-500">
             Home
           </button>{" "}
           / {cart.restaurantName} / My Cart

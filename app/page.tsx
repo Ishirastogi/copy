@@ -5,41 +5,46 @@ import { useAuth } from "@/context/auth-context";
 import LoginPage from "@/components/auth/login-page";
 import PhoneNumberPage from "@/components/auth/phone-number-page";
 import OtpVerificationPage from "@/components/auth/otp-verification-page";
-import LandingPage from "@/components/landing/landing-page"; // Internal "What's on your mind" page
+import LandingPage from "@/components/landing/landing-page";
 import RestaurantPage from "@/components/restaurant/restaurant-page";
 import CartPage from "@/components/checkout/cart-page";
 import CheckoutPage from "@/components/checkout/checkout-page";
 import ThankYouPage from "@/components/checkout/thank-you-page";
 import TrackOrderPage from "@/components/checkout/track-order-page";
 import CategoryPage from "@/components/category/category";
-import MainLandingView from "@/components/main/main-landing-view"; // Split design hero page
+import MainLandingView from "@/components/main/main-landing-view";
+
+type AuthStep =
+  | "login"
+  | "phone"
+  | "otp"
+  | "landing"
+  | "food-home"
+  | "restaurant"
+  | "cart"
+  | "checkout"
+  | "thank-you"
+  | "track-order"
+  | "category";
 
 export default function Home() {
   const { login } = useAuth();
-  
-  // Added "food-home" to the authStep type
-  const [authStep, setAuthStep] = useState<
-    | "login"
-    | "phone"
-    | "otp"
-    | "landing"      // The Hero split design
-    | "food-home"    // The "What's on your mind" design
-    | "restaurant"
-    | "cart"
-    | "checkout"
-    | "thank-you"
-    | "track-order"
-    | "category"
-  >("login");
+
+  // ✅ Start from login
+  const [authStep, setAuthStep] = useState<AuthStep>("login");
 
   const [userPhone, setUserPhone] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [userName, setUserName] = useState({ firstName: "", lastName: "" });
   const [selectedRestaurant, setSelectedRestaurant] = useState<any>(null);
 
-  // --- NAVIGATION HANDLERS ---
+  // ---------------- NAVIGATION HANDLERS ----------------
 
-  const handlePhoneSubmit = (phone: string, firstName: string, lastName: string) => {
+  const handlePhoneSubmit = (
+    phone: string,
+    firstName: string,
+    lastName: string
+  ) => {
     setUserPhone(phone);
     setUserName({ firstName, lastName });
     setAuthStep("otp");
@@ -53,12 +58,11 @@ export default function Home() {
       phone: userPhone,
       defaultAddress: "201, Ganga nagar, 344042",
     });
-    setAuthStep("landing"); // First show the Split Hero Page after login
+    setAuthStep("landing");
   };
 
-  // Triggered by "Explore" button on the MainLandingView
   const handleExploreFood = () => {
-    setAuthStep("food-home"); 
+    setAuthStep("food-home");
   };
 
   const handleSelectRestaurant = (restaurant: any) => {
@@ -71,13 +75,14 @@ export default function Home() {
     setAuthStep("category");
   };
 
+  const handleBackToLanding = () => {
+    setAuthStep("landing");
+  };
+ const handleBackToRestaurant = () => {
+  setAuthStep("restaurant");
+};
   const handleBackToFoodHome = () => {
     setAuthStep("food-home");
-  };
-
-  // Added logic to go back to the very first Hero screen if needed
-  const handleBackToHero = () => {
-    setAuthStep("landing");
   };
 
   const handleGoToCart = () => setAuthStep("cart");
@@ -87,39 +92,45 @@ export default function Home() {
 
   return (
     <main>
-      {/* 1. AUTHENTICATION */}
+      {/* LOGIN */}
       {authStep === "login" && (
         <LoginPage onContinuePhone={() => setAuthStep("phone")} />
       )}
-      {authStep === "phone" && <PhoneNumberPage onSubmit={handlePhoneSubmit} />}
+
+      {authStep === "phone" && (
+        <PhoneNumberPage onSubmit={handlePhoneSubmit} />
+      )}
+
       {authStep === "otp" && (
         <OtpVerificationPage phone={userPhone} onVerify={handleOtpVerify} />
       )}
 
-      {/* 2. MAIN HERO DESIGN (Split Orange/Black) */}
+      {/* MAIN LANDING */}
       {authStep === "landing" && (
-        <MainLandingView 
-          onExplore={handleExploreFood} 
-          onSelectCategory={handleSelectCategory} 
-        />
-      )}
-
-      {/* 3. INTERNAL FOOD PAGE ("Hey! What's on your mind") */}
-      {authStep === "food-home" && (
-        <LandingPage
-          onSelectRestaurant={handleSelectRestaurant}
+        <MainLandingView
+          onExplore={handleExploreFood}
           onSelectCategory={handleSelectCategory}
         />
       )}
 
-      {/* 4. CONTENT PAGES */}
+      {/* FOOD HOME */}
+      {authStep === "food-home" && (
+        <LandingPage
+          onSelectRestaurant={handleSelectRestaurant}
+          onSelectCategory={handleSelectCategory}
+          onBack={handleBackToLanding}
+        />
+      )}
+
+      {/* CATEGORY */}
       {authStep === "category" && (
         <CategoryPage
           categoryName={selectedCategory}
           onBack={handleBackToFoodHome}
         />
       )}
-      
+
+      {/* RESTAURANT */}
       {authStep === "restaurant" && selectedRestaurant && (
         <RestaurantPage
           restaurant={selectedRestaurant}
@@ -128,14 +139,15 @@ export default function Home() {
         />
       )}
 
-      {/* 5. CHECKOUT FLOW */}
+      {/* CHECKOUT FLOW */}
       {authStep === "cart" && (
         <CartPage
           onCheckout={handleGoToCheckout}
-          onBackToLanding={handleBackToFoodHome}
+          onBackToRestaurant={handleBackToRestaurant}
           onLogin={() => setAuthStep("login")}
         />
       )}
+
       {authStep === "checkout" && (
         <CheckoutPage
           onThankYou={handleGoToThankYou}
@@ -143,9 +155,11 @@ export default function Home() {
           onBackToCart={handleGoToCart}
         />
       )}
+
       {authStep === "thank-you" && (
         <ThankYouPage onContinue={handleGoToTrackOrder} />
       )}
+
       {authStep === "track-order" && (
         <TrackOrderPage onBack={handleBackToFoodHome} />
       )}
