@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 
@@ -41,13 +40,12 @@ export default function OtpVerificationPage({ phone, onVerify }: OtpVerification
   }
 
   const handleVerify = () => {
-    const otpCode = otp.join("")
-    if (otpCode.length === 6) {
-      onVerify()
-    }
+    // Condition removed: onVerify will now trigger regardless of input
+    onVerify()
   }
 
-  const maskedPhone = phone.slice(0, -4) + "XXXX"
+  // Fallback for maskedPhone in case phone is an empty string
+  const maskedPhone = phone ? (phone.slice(0, -4) + "XXXX") : "your number"
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 py-12">
@@ -83,6 +81,7 @@ export default function OtpVerificationPage({ phone, onVerify }: OtpVerification
         <Button
           className="w-full md:w-96 h-14 bg-orange-500 hover:bg-orange-600 text-white text-lg rounded-full font-semibold mb-6"
           onClick={handleVerify}
+          // Button remains enabled at all times
         >
           Verify & Login
         </Button>

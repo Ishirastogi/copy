@@ -14,9 +14,10 @@ export default function PhoneNumberPage({ onSubmit }: PhoneNumberPageProps) {
   const [phone, setPhone] = useState("")
 
   const handleSubmit = () => {
-    if (phone.trim() && firstName.trim() && lastName.trim()) {
-      onSubmit(`+91${phone}`, firstName, lastName)
-    }
+    // Removed the "if" condition so it always triggers onSubmit
+    // Added a check to only prepend +91 if a phone number exists
+    const formattedPhone = phone ? `+91${phone}` : ""
+    onSubmit(formattedPhone, firstName, lastName)
   }
 
   return (
@@ -29,7 +30,6 @@ export default function PhoneNumberPage({ onSubmit }: PhoneNumberPageProps) {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              {/* <label className="block text-gray-700 font-semibold mb-2">First Name</label> */}
               <Input
                 placeholder="First Name"
                 value={firstName}
@@ -38,7 +38,6 @@ export default function PhoneNumberPage({ onSubmit }: PhoneNumberPageProps) {
               />
             </div>
             <div>
-              {/* <label className="block text-gray-700 font-semibold mb-2">Last Name</label> */}
               <Input
                 placeholder="Last Name"
                 value={lastName}
@@ -56,16 +55,15 @@ export default function PhoneNumberPage({ onSubmit }: PhoneNumberPageProps) {
                 placeholder="9897865467"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                maxLength="10"
                 className="flex-1 text-lg border-0 bg-transparent focus:ring-0 placeholder:text-gray-400"
               />
             </div>
           </div>
 
           <Button
-            className="w-full h-14 bg-orange-500 hover:bg-orange-600 text-white text-lg rounded-full font-semibold disabled:opacity-50"
+            className="w-full h-14 bg-orange-500 hover:bg-orange-600 text-white text-lg rounded-full font-semibold"
             onClick={handleSubmit}
-            disabled={!phone.trim() || !firstName.trim() || !lastName.trim()}
+            // Disabled prop removed so button is always clickable
           >
             Send OTP
           </Button>
