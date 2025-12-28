@@ -1,106 +1,87 @@
 "use client"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import SizeModal from "@/components/SizeModal/SizeModal" 
+import { SizePopup } from "./size-popup"
 
-interface MenuItemProps {
-  item: any
-  onAddItem: (item: any) => void
-}
-
-export default function MenuItem({ item, onAddItem }: MenuItemProps) {
+export default function MenuItem({ item, onAddItem }: any) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [quantity, setQuantity] = useState(0)
 
+  const handleAddClick = () => {
+    setIsPopupOpen(true)
+  }
 
-  const [showSizeModal, setShowSizeModal] = useState(false)
-  const [selectedSize, setSelectedSize] = useState("Small")
-
-  const handleAdd = () => {
+  const handleSizeConfirm = (selectedSize: { label: string; price: number }) => {
     setQuantity(1)
-    onAddItem({ ...item, size: selectedSize }) 
-  }
-
-  const handleIncrement = () => {
-    setQuantity((prev) => prev + 1)
-    onAddItem(item)
-  }
-
-  const handleDecrement = () => {
-    if (quantity > 0) {
-      setQuantity((prev) => prev - 1)
-    }
+    onAddItem({ 
+      ...item, 
+      id: `${item.id}-${selectedSize.label}`, // Unique ID for specific size
+      price: selectedSize.price, 
+      selectedSize: selectedSize.label,
+      quantity: 1 
+    })
+    setIsPopupOpen(false)
   }
 
   return (
-    <>
-      <div className="flex justify-between items-start gap-4 pb-6 border-b border-gray-200">
-        <div className="flex-1">
-          <div className="flex items-start gap-2 mb-2">
-            <div
-              className={`w-3 h-3 rounded-full flex-shrink-0 mt-1 ${
-                item.veg ? "bg-green-500" : "bg-red-500"
-              }`}
-            ></div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {item.name}
-                {item.tag && (
-                  <span className="ml-2 text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded">
-                    {item.tag}
-                  </span>
-                )}
-              </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Serve 1, Grilled Bread with tomatoes, garlic basil and olive oil
-              </p>
+   <div className="flex justify-between items-start py-4 sm:py-6 border-b border-gray-100 last:border-0">
+      <div className="flex-1 pr-6">
+        <div className="flex items-start gap-3">
+          {/* Veg/Non-Veg Icon */}
+          <div className={`mt-1.5 w-4 h-4 border-2 flex items-center justify-center shrink-0 ${item.veg ? "border-green-600" : "border-red-600"}`}>
+             <div className={`w-2 h-2 rounded-full ${item.veg ? "bg-green-600" : "bg-red-600"}`} />
+          </div>
+          <div>
+           <h3 className="text-lg sm:text-2xl font-serif font-bold text-gray-800 leading-tight">
+              {item.name}
+              {item.isCustomizable && (
+                <span className="ml-2 text-[10px] bg-orange-50 text-orange-500 border border-orange-100 px-2 py-0.5 rounded-sm uppercase font-black">Customize</span>
+              )}
+            </h3>
+           <p className="text-xs sm:text-sm text-gray-400 mt-1 leading-snug">
+              Serve 1. Grilled Bread with tomatoes, garlic basil and olive oil
+            </p>
+            <div className="mt-3">
+              <p className="text-sm sm:text-lg font-bold text-gray-900 font-sans">
+  Rs. {item.price}
+</p>
+              <p className="text-[11px] text-red-400 font-bold uppercase mt-1">Rs. 1000 for two</p>
             </div>
           </div>
-
-          <div className="mt-3">
-            <p className="font-semibold text-gray-900">Rs. {item.price}</p>
-          </div>
         </div>
-
-  
-        {quantity === 0 ? (
-          <Button
-            onClick={() => setShowSizeModal(true)} // ✅ OPEN MODAL
-            className="bg-orange-200 hover:bg-orange-300 text-orange-600 font-semibold px-6 py-2 rounded-lg flex-shrink-0"
-          >
-            Add
-          </Button>
-        ) : (
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button
-              onClick={handleDecrement}
-              className="w-8 h-8 rounded-full bg-white border border-orange-500 flex items-center justify-center text-orange-600 hover:bg-orange-50 font-bold text-xl"
-            >
-              −
-            </button>
-            <span className="text-orange-600 font-bold text-lg w-8 text-center">
-              {quantity}
-            </span>
-            <button
-              onClick={handleIncrement}
-              className="w-8 h-8 rounded-full bg-white border border-orange-500 flex items-center justify-center text-orange-600 hover:bg-orange-50 font-bold text-xl"
-            >
-              +
-            </button>
-          </div>
-        )}
       </div>
 
-      <SizeModal
-        isOpen={showSizeModal}
-        onClose={() => setShowSizeModal(false)}
-        selectedSize={selectedSize}
-        setSelectedSize={setSelectedSize}
-        onContinue={() => {
-          setShowSizeModal(false)
-          handleAdd()
-        }}
-      />
-    </>
+      {/* Image Container with Overlapping Button */}
+      <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0">
+        <img 
+          src={item.image || "https://via.placeholder.com/150"} 
+          className="w-full h-full object-cover rounded-2xl shadow-sm border border-gray-50"
+          alt={item.name}
+        />
+       <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-[90%]">
+          {quantity === 0 ? (
+            <Button
+              onClick={handleAddClick}
+              className="w-full bg-[#FFF1F0] hover:bg-[#FFE4E1] text-[#F97316] border border-orange-100 shadow-md font-bold py-2 rounded-xl h-auto transition-all"
+            >
+              Add
+            </Button>
+          ) : (
+           <div className="flex items-center bg-white border border-[#F97316] rounded-xl shadow-md overflow-hidden h-9">
+              <button onClick={() => setQuantity(q => q - 1)} className="flex-1 h-full text-[#F97316] font-black text-xl hover:bg-orange-50">−</button>
+              <span className="flex-1 text-center text-[#F97316] font-bold text-lg">{quantity}</span>
+              <button onClick={() => setQuantity(q => q + 1)} className="flex-1 h-full text-[#F97316] font-black text-xl hover:bg-orange-50">+</button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {isPopupOpen && (
+        <SizePopup 
+          onClose={() => setIsPopupOpen(false)} 
+          onConfirm={handleSizeConfirm} 
+        />
+      )}
+    </div>
   )
 }

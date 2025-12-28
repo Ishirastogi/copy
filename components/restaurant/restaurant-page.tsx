@@ -78,25 +78,47 @@ export default function RestaurantPage({ restaurant, onBack, onViewCart }: Resta
         </div>
 
         {/* Menu Sections */}
-        {restaurant.items && restaurant.items.length > 0 && (
-          <div className="space-y-8 mb-12">
-            <MenuSection title="Appetizers" count={2} items={restaurant.items.slice(0, 2)} onAddItem={handleAddItem} />
-            <MenuSection title="Main Course" count={2} items={restaurant.items.slice(2, 4)} onAddItem={handleAddItem} />
-          </div>
-        )}
+       {/* Menu Sections */}
+{restaurant.items ? (
+  <div className="space-y-8 mb-20">
+
+    {restaurant.items.appetizers?.length > 0 && (
+      <MenuSection
+        title="Appetizers"
+        items={restaurant.items.appetizers}
+        onAddItem={handleAddItem}
+      />
+    )}
+
+    {restaurant.items.mainCourse?.length > 0 && (
+      <MenuSection
+        title="Main Course"
+        items={restaurant.items.mainCourse}
+        onAddItem={handleAddItem}
+      />
+    )}
+
+  </div>
+) : (
+  <div className="py-10 text-center text-gray-500">
+    No menu items found.
+  </div>
+)}
+
       </div>
 
       {/* View Cart Button */}
-      {cartCount > 0 && (
-        <div className="fixed bottom-6 right-6">
-          <Button
-            onClick={onViewCart}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 rounded-full font-bold text-lg shadow-lg"
-          >
-            View Cart ({cartCount})
-          </Button>
-        </div>
-      )}
+     {cartCount > 0 && (
+  <div className="fixed bottom-6 right-6 z-50">
+    <Button
+      onClick={onViewCart}
+      className="bg-green-600 hover:bg-green-700 text-white px-8 py-6 rounded-full font-bold text-lg shadow-lg flex items-center gap-2"
+    >
+      View Cart ({cartCount})
+    </Button>
+  </div>
+)}
+
 
       <footer className="bg-gray-50 border-t border-gray-200 py-8 mt-12">
         <div className="max-w-7xl mx-auto px-4">

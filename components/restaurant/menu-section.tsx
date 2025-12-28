@@ -2,20 +2,19 @@ import MenuItem from "./menu-item"
 
 interface MenuSectionProps {
   title: string
-  count: number
   items: any[]
   onAddItem: (item: any) => void
 }
 
-export default function MenuSection({ title, count, items, onAddItem }: MenuSectionProps) {
-  return (
-    <div className="border-b border-gray-200 pb-8">
-      <h2 className="text-2xl font-serif text-gray-900 mb-6 flex items-center gap-2">
-        {title}
-        <span className="text-lg text-gray-600">({count})</span>
-      </h2>
+export default function MenuSection({ title, items, onAddItem }: MenuSectionProps) {
+  if (!items || items.length === 0) return null;
 
-      <div className="space-y-6">
+  return (
+    <div className="mb-6">
+      <h2 className="text-3xl font-serif font-medium text-gray-800 mb-6">
+        {title} <span className="text-xl text-gray-400 font-sans ml-1">({items.length})</span>
+      </h2>
+      <div className="flex flex-col">
         {items.map((item) => (
           <MenuItem key={item.id} item={item} onAddItem={onAddItem} />
         ))}
