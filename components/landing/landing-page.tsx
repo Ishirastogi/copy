@@ -139,17 +139,21 @@ export default function LandingPage({
     <div className="min-h-screen bg-white relative overflow-x-hidden">
       {/* 1. FIXED NAVBAR: Added padding and flex-1 for better spacing */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-[60] w-full">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 md:gap-4">
+        <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2">
             <button
               onClick={onBack}
               className="p-1 hover:bg-gray-100 rounded-full transition-colors"
             >
-              <ChevronLeft className="w-6 h-6 text-gray-700" />
+              <ChevronLeft className="w-5 h-5 text-gray-700" />
             </button>
-            <h1 className="text-xl md:text-2xl font-bold text-gray-900">
-              FoodWallah
-            </h1>
+            <Image
+              src="/logo.png"
+              alt="FoodWallah"
+              width={150}
+              height={50}
+              className="object-contain h-12 w-auto"
+            />
           </div>
 
           <div className="flex items-center gap-3 md:gap-6">
@@ -295,17 +299,48 @@ export default function LandingPage({
         </div>
       </main>
 
-      {/* FOOTER */}
-      <footer className="bg-gray-50 border-t border-gray-200 py-12">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-4">FoodWallah</h3>
-            <p className="text-sm text-gray-600">
-              © 2025 Dine Order. All Rights Reserved
-            </p>
+      <footer className="bg-gray-50 border-t border-gray-200 mt-12">
+        {/* MOBILE FOOTER */}
+        <div className="block md:hidden px-4 py-8">
+          {/* Logo */}
+          <div className="text-center mb-6">
+            <h2 className="text-3xl font-bold text-gray-900">LocalWallah</h2>
+
+            {/* Social Icons */}
+            <div className="flex justify-center gap-5 mt-4">
+              <span className="text-xl">📘</span>
+              <span className="text-xl">📸</span>
+              <span className="text-xl">🔗</span>
+            </div>
           </div>
-          {/* Footer Links (Original Logic) */}
-          <div className="grid grid-cols-2 md:contents gap-8">
+
+          {/* Links */}
+          <div className="flex justify-between text-sm text-gray-600 px-4">
+            <div className="space-y-2">
+              <p>Terms of Service</p>
+              <p>Privacy Policy</p>
+            </div>
+
+            <div className="space-y-2 text-right">
+              <p>Home</p>
+              <p>About Us</p>
+              <p>Contact Us</p>
+            </div>
+          </div>
+        </div>
+
+        {/* DESKTOP FOOTER */}
+        <div className="hidden md:block">
+          <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-4 gap-12">
+            <div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                FoodWallah
+              </h3>
+              <p className="text-sm text-gray-600">
+                © 2025 Dine Order. All Rights Reserved
+              </p>
+            </div>
+
             <div>
               <h4 className="font-bold mb-4">Policies</h4>
               <ul className="text-sm space-y-2 text-gray-600">
@@ -313,6 +348,7 @@ export default function LandingPage({
                 <li>Privacy Policy</li>
               </ul>
             </div>
+
             <div>
               <h4 className="font-bold mb-4">Quick Links</h4>
               <ul className="text-sm space-y-2 text-gray-600">

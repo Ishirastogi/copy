@@ -1,6 +1,7 @@
 "use client"
 
 import { CheckCircle, ShoppingCart } from "lucide-react"
+import Image from "next/image"
 
 interface ThankYouPageProps {
   onContinue: () => void
@@ -12,71 +13,100 @@ export default function ThankYouPage({ onContinue }: ThankYouPageProps) {
   const totalPaid = 490.3
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+
+      {/* HEADER */}
       <header className="border-b border-gray-200 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-4">
-          <h1 className="text-lg font-semibold text-gray-900">FoodWallah</h1>
+        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center">
+          <Image
+            src="/logo.png"
+            alt="LocalWallah"
+            width={120}
+            height={40}
+            className="object-contain h-10 w-auto"
+            priority
+          />
         </div>
       </header>
 
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        <div className="grid gap-12 lg:grid-cols-2">
-          {/* Left - Food Image */}
-          <div className="flex items-center justify-center">
-            <img src="/delicious-pizza-food.jpg" alt="Order food" className="h-96 w-96 rounded-2xl object-cover" />
-          </div>
+      {/* MAIN CONTENT */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
 
-          {/* Right - Thank You Message */}
-          <div className="flex flex-col justify-center">
-            <div className="mb-8 flex justify-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-orange-500">
-                <CheckCircle className="h-12 w-12 text-white" />
-              </div>
-            </div>
-
-            <h1 className="mb-4 text-center text-4xl font-bold text-gray-900">Thank you for placing your order!</h1>
-
-            <p className="mb-12 text-center text-lg text-gray-600">Your order has been confirmed.</p>
-
-            {/* Order Details Box */}
-            <div className="mb-8 rounded-2xl border-2 border-orange-500 bg-white p-8">
-              <div className="mb-6 grid grid-cols-2 gap-8">
-                <div>
-                  <p className="mb-2 text-sm font-semibold text-gray-600">Estimated Arrival:</p>
-                  <p className="text-xl font-bold text-gray-900">{estimatedArrival}</p>
-                </div>
-                <div>
-                  <p className="mb-2 text-sm font-semibold text-gray-600">Order Number:</p>
-                  <p className="text-xl font-bold text-gray-900">#{orderNumber}</p>
-                </div>
-              </div>
-              <div className="border-t border-gray-200 pt-6">
-                <p className="mb-2 text-sm font-semibold text-gray-600">Total Paid</p>
-                <p className="text-2xl font-bold text-gray-900">Rs. {totalPaid.toFixed(2)}</p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="space-y-4">
-              <button
-                onClick={onContinue}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 px-8 py-4 font-bold text-white hover:bg-orange-600"
-              >
-                <ShoppingCart size={20} />
-                Track My Order!
-              </button>
-
-              <button
-                onClick={onContinue}
-                className="w-full rounded-full bg-green-100 px-8 py-4 font-semibold text-green-700 hover:bg-green-200"
-              >
-                Get instant updates on whatsapp!
-              </button>
-            </div>
+        {/* Success Icon */}
+        <div className="mb-6">
+          <div className="h-20 w-20 rounded-full bg-orange-500 flex items-center justify-center">
+            <CheckCircle className="text-white w-12 h-12" />
           </div>
         </div>
-      </div>
+
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">
+          Thank you for placing your order!
+        </h1>
+
+        <p className="text-gray-600 text-center mb-6">
+          Your order has been confirmed.
+        </p>
+
+        {/* Order Info Card */}
+        <div className="w-full max-w-md bg-white border border-orange-400 rounded-2xl p-6 mb-6">
+          <div className="flex justify-between mb-4">
+            <div>
+              <p className="text-sm text-gray-500">Estimated Arrival</p>
+              <p className="font-semibold">{estimatedArrival}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Order Number</p>
+              <p className="font-semibold">#{orderNumber}</p>
+            </div>
+          </div>
+
+          <div className="border-t pt-4">
+            <p className="text-sm text-gray-500">Total Paid</p>
+            <p className="text-xl font-bold">₹{totalPaid.toFixed(2)}</p>
+          </div>
+        </div>
+
+        {/* CTA Buttons */}
+        <div className="w-full max-w-md space-y-4">
+          <button
+            onClick={onContinue}
+            className="w-full flex items-center justify-center gap-2 rounded-full bg-orange-500 py-4 font-bold text-white hover:bg-orange-600"
+          >
+            <ShoppingCart size={20} />
+            Track My Order!
+          </button>
+
+          <button
+            onClick={onContinue}
+            className="w-full rounded-full bg-green-100 py-4 font-semibold text-green-700 hover:bg-green-200"
+          >
+            Get instant updates on WhatsApp
+          </button>
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="mt-10 bg-gray-50 border-t border-gray-200 py-6 text-center">
+        <Image
+          src="/logo.png"
+          alt="LocalWallah"
+          width={140}
+          height={45}
+          className="mx-auto mb-4"
+        />
+
+        <div className="flex justify-center gap-6 mb-4">
+          <span className="text-xl">📘</span>
+          <span className="text-xl">📸</span>
+          <span className="text-xl">🔗</span>
+        </div>
+
+        <div className="flex justify-center gap-10 text-sm text-gray-600">
+          <span>Terms of Service</span>
+          <span>Privacy Policy</span>
+        </div>
+      </footer>
     </div>
   )
 }

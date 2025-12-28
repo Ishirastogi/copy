@@ -1,47 +1,57 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { useCart } from "@/context/cart-context"
-import { useAuth } from "@/context/auth-context"
-import { ChevronDown, ChevronUp, ArrowLeft } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import { useCart } from "@/context/cart-context";
+import { useAuth } from "@/context/auth-context";
+import { ChevronDown, ChevronUp, ArrowLeft } from "lucide-react";
 
 interface CheckoutPageProps {
-  onThankYou: () => void
-  onLogin: () => void
-  onBackToCart: () => void
+  onThankYou: () => void;
+  onLogin: () => void;
+  onBackToCart: () => void;
 }
 
-export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: CheckoutPageProps) {
-  const { cart, getTotalPrice } = useCart()
-  const { isLoggedIn, user, updateUser } = useAuth()
-  const [expandedSection, setExpandedSection] = useState<string>("account")
-  const [noContactDelivery, setNoContactDelivery] = useState(false)
-  const [suggestion, setSuggestion] = useState("")
-  const [couponApplied, setCouponApplied] = useState(false)
-  const [deliveryAddress, setDeliveryAddress] = useState(user?.defaultAddress || "")
+export default function CheckoutPage({
+  onThankYou,
+  onLogin,
+  onBackToCart,
+}: CheckoutPageProps) {
+  const { cart, getTotalPrice } = useCart();
+  const { isLoggedIn, user, updateUser } = useAuth();
+  const [expandedSection, setExpandedSection] = useState<string>("account");
+  const [noContactDelivery, setNoContactDelivery] = useState(false);
+  const [suggestion, setSuggestion] = useState("");
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [deliveryAddress, setDeliveryAddress] = useState(
+    user?.defaultAddress || ""
+  );
   const [formData, setFormData] = useState({
     address: "",
     city: "",
     zipCode: "",
-  })
+  });
 
-  const deliveryFee = 40
-  const gstCharges = 10
-  const discount = couponApplied ? 20 : 0
-  const subtotal = getTotalPrice()
-  const total = subtotal + deliveryFee + gstCharges - discount
+  const deliveryFee = 40;
+  const gstCharges = 10;
+  const discount = couponApplied ? 20 : 0;
+  const subtotal = getTotalPrice();
+  const total = subtotal + deliveryFee + gstCharges - discount;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handlePlaceOrder = () => {
     if (isLoggedIn && deliveryAddress) {
-      onThankYou()
+      onThankYou();
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,13 +72,16 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
 
       <div className="mx-auto max-w-7xl px-6 py-8">
         {isLoggedIn && (
-          <button onClick={onBackToCart} className="mb-6 flex items-center gap-2 text-orange-500 hover:text-orange-600">
+          <button
+            onClick={onBackToCart}
+            className="mb-6 flex items-center gap-2 text-orange-500 hover:text-orange-600"
+          >
             <ArrowLeft size={20} />
             Back
           </button>
         )}
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3">
           {/* Left Column - Checkout Steps */}
           <div className="lg:col-span-2">
             <div className="space-y-4">
@@ -76,14 +89,20 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                 // Non-logged-in view with login/signup
                 <div className="rounded-lg border border-gray-200 bg-white">
                   <button
-                    onClick={() => setExpandedSection(expandedSection === "account" ? "" : "account")}
+                    onClick={() =>
+                      setExpandedSection(
+                        expandedSection === "account" ? "" : "account"
+                      )
+                    }
                     className="flex w-full items-center justify-between p-6"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white font-semibold">
                         1
                       </div>
-                      <h2 className="text-xl font-bold text-gray-900">Account</h2>
+                      <h2 className="text-xl font-bold text-gray-900">
+                        Account
+                      </h2>
                     </div>
                     {expandedSection === "account" ? (
                       <ChevronUp className="text-gray-600" />
@@ -95,7 +114,9 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                   {expandedSection === "account" && (
                     <div className="border-t border-gray-200 px-6 py-6">
                       <div className="mb-8 text-center">
-                        <p className="mb-8 text-gray-700">Please log in or sign up to continue.</p>
+                        <p className="mb-8 text-gray-700">
+                          Please log in or sign up to continue.
+                        </p>
                         <div className="flex gap-3 justify-center">
                           <button
                             onClick={onLogin}
@@ -122,7 +143,9 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white font-semibold">
                         ✓
                       </div>
-                      <h2 className="text-xl font-bold text-gray-900">Account</h2>
+                      <h2 className="text-xl font-bold text-gray-900">
+                        Account
+                      </h2>
                     </div>
                   </div>
                   <div className="p-6">
@@ -137,14 +160,20 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
               {isLoggedIn && (
                 <div className="rounded-lg border border-gray-200 bg-white">
                   <button
-                    onClick={() => setExpandedSection(expandedSection === "delivery" ? "" : "delivery")}
+                    onClick={() =>
+                      setExpandedSection(
+                        expandedSection === "delivery" ? "" : "delivery"
+                      )
+                    }
                     className="flex w-full items-center justify-between p-6"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white font-semibold">
                         2
                       </div>
-                      <h2 className="text-xl font-bold text-gray-900">Add a delivery address</h2>
+                      <h2 className="text-xl font-bold text-gray-900">
+                        Add a delivery address
+                      </h2>
                     </div>
                     {expandedSection === "delivery" ? (
                       <ChevronUp className="text-gray-600" />
@@ -156,10 +185,16 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                   {expandedSection === "delivery" && (
                     <div className="border-t border-gray-200 px-6 py-6">
                       <div className="text-center py-8">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">Add New Address</h3>
-                        <p className="text-gray-600 mb-6">Please add a new delivery address to proceed</p>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          Add New Address
+                        </h3>
+                        <p className="text-gray-600 mb-6">
+                          Please add a new delivery address to proceed
+                        </p>
                         <button
-                          onClick={() => setDeliveryAddress("201, Ganga nagar, 344042")}
+                          onClick={() =>
+                            setDeliveryAddress("201, Ganga nagar, 344042")
+                          }
                           className="rounded-full bg-orange-500 px-8 py-2 font-semibold text-white hover:bg-orange-600"
                         >
                           Add New
@@ -174,14 +209,20 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
               {isLoggedIn && (
                 <div className="rounded-lg border border-gray-200 bg-white">
                   <button
-                    onClick={() => setExpandedSection(expandedSection === "cart" ? "" : "cart")}
+                    onClick={() =>
+                      setExpandedSection(
+                        expandedSection === "cart" ? "" : "cart"
+                      )
+                    }
                     className="flex w-full items-center justify-between p-6"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-400 text-white font-semibold">
                         🛒
                       </div>
-                      <h2 className="text-xl font-bold text-gray-900">My Cart</h2>
+                      <h2 className="text-xl font-bold text-gray-900">
+                        My Cart
+                      </h2>
                     </div>
                     {expandedSection === "cart" ? (
                       <ChevronUp className="text-gray-600" />
@@ -194,12 +235,21 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                     <div className="border-t border-gray-200 px-6 py-6">
                       <div className="space-y-4">
                         {cart.items.map((item) => (
-                          <div key={item.id} className="flex justify-between items-center">
+                          <div
+                            key={item.id}
+                            className="flex justify-between items-center"
+                          >
                             <div>
-                              <p className="font-semibold text-gray-900">{item.name}</p>
-                              <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                              <p className="font-semibold text-gray-900">
+                                {item.name}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                Qty: {item.quantity}
+                              </p>
                             </div>
-                            <p className="font-semibold text-gray-900">Rs. {item.price * item.quantity}</p>
+                            <p className="font-semibold text-gray-900">
+                              Rs. {item.price * item.quantity}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -212,9 +262,11 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
 
           {/* Right Column - Order Summary */}
           <div>
-            <div className="sticky top-8 space-y-6">
-              <div className="rounded-lg bg-white p-6">
-                <h3 className="mb-6 text-xl font-bold text-gray-900">Order Summary</h3>
+            <div className="lg:sticky lg:top-8 space-y-6">
+              <div className="rounded-lg bg-white p-4 sm:p-6">
+                <h3 className="mb-6 text-xl font-bold text-gray-900">
+                  Order Summary
+                </h3>
 
                 {/* Cart Items */}
                 <div className="space-y-4 mb-6">
@@ -223,7 +275,9 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                       <span className="text-gray-600">
                         {item.name} x {item.quantity}
                       </span>
-                      <span className="font-semibold">Rs. {item.price * item.quantity}</span>
+                      <span className="font-semibold">
+                        Rs. {item.price * item.quantity}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -251,8 +305,12 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                       onChange={(e) => setNoContactDelivery(e.target.checked)}
                       className="rounded"
                     />
-                    <label htmlFor="noContact" className="text-sm text-gray-600">
-                      Opt in for No-contact Delivery. Our delivery partner will leave your order at door
+                    <label
+                      htmlFor="noContact"
+                      className="text-sm text-gray-600"
+                    >
+                      Opt in for No-contact Delivery. Our delivery partner will
+                      leave your order at door
                     </label>
                   </div>
                 )}
@@ -290,10 +348,18 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
                       </div>
                     )}
                     <div className="border-t border-gray-200 pt-4 flex justify-between">
-                      <span className="font-semibold text-gray-900">To Pay</span>
-                      <span className="text-lg font-bold text-gray-900">Rs. {total}</span>
+                      <span className="font-semibold text-gray-900">
+                        To Pay
+                      </span>
+                      <span className="text-lg font-bold text-gray-900">
+                        Rs. {total}
+                      </span>
                     </div>
-                    {couponApplied && <p className="text-orange-600 text-sm">Saving of Rs.{discount}</p>}
+                    {couponApplied && (
+                      <p className="text-orange-600 text-sm">
+                        Saving of Rs.{discount}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -301,7 +367,7 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
               {isLoggedIn && (
                 <button
                   onClick={handlePlaceOrder}
-                  className="w-full rounded-full bg-orange-500 px-6 py-3 font-bold text-white hover:bg-orange-600 disabled:opacity-50"
+                  className="hidden lg:block w-full rounded-full bg-orange-500 px-6 py-3 font-bold text-white hover:bg-orange-600"
                 >
                   Proceed To Pay
                 </button>
@@ -313,6 +379,15 @@ export default function CheckoutPage({ onThankYou, onLogin, onBackToCart }: Chec
           </div>
         </div>
       </div>
+      {/* Mobile Bottom CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 p-4 lg:hidden">
+        <button
+          onClick={handlePlaceOrder}
+          className="w-full rounded-full bg-orange-500 py-4 text-white font-bold text-lg"
+        >
+          Proceed to Pay • ₹{total}
+        </button>
+      </div>
     </div>
-  )
+  );
 }

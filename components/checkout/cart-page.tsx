@@ -1,36 +1,40 @@
-"use client"
-import { useCart } from "@/context/cart-context"
-import { useAuth } from "@/context/auth-context"
-import { Minus, Plus, Trash2, ChevronLeft } from "lucide-react"
+"use client";
+import { useCart } from "@/context/cart-context";
+import { useAuth } from "@/context/auth-context";
+import { Minus, Plus, Trash2, ChevronLeft } from "lucide-react";
 
 interface CartPageProps {
-  onCheckout: () => void
-  onBackToRestaurant: () => void
-  onLogin: () => void
+  onCheckout: () => void;
+  onBackToRestaurant: () => void;
+  onLogin: () => void;
 }
 
-export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: CartPageProps) {
-  const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart()
-  const { isLoggedIn, user } = useAuth()
+export default function CartPage({
+  onCheckout,
+  onBackToRestaurant,
+  onLogin,
+}: CartPageProps) {
+  const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart();
+  const { isLoggedIn, user } = useAuth();
 
-  const deliveryFee = 40
-  const gstCharges = 10
-  const subtotal = getTotalPrice()
-  const total = subtotal + deliveryFee + gstCharges
+  const deliveryFee = 40;
+  const gstCharges = 10;
+  const subtotal = getTotalPrice();
+  const total = subtotal + deliveryFee + gstCharges;
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
-           {/* Back Button */}
-    <button
-      onClick={onBackToRestaurant}
-     className="flex items-center gap-2 text-gray-700 hover:text-black transition"
-                 >
-                   <ChevronLeft className="w-5 h-5" />
-                   <span className="text-sm font-medium">Back</span>
-                 </button>
+          {/* Back Button */}
+          <button
+            onClick={onBackToRestaurant}
+            className="flex items-center gap-2 text-gray-700 hover:text-black transition"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Back</span>
+          </button>
           <h1 className="text-3xl font-bold text-gray-900">Secure Checkout</h1>
         </div>
       </header>
@@ -38,29 +42,36 @@ export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: Ca
       <div className="mx-auto max-w-7xl px-6 py-8">
         {/* Breadcrumb */}
         <div className="mb-8 text-sm text-gray-600">
-          <button className="hover:text-orange-500">
-            Home
-          </button>{" "}
-          / {cart.restaurantName} / My Cart
+          <button className="hover:text-orange-500">Home</button> /{" "}
+          {cart.restaurantName} / My Cart
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3">
           {/* Left Column - Cart Items */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-6">
             <div className="rounded-lg bg-white p-8">
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900">Your Order ({cart.items.length} items)</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Your Order ({cart.items.length} items)
+                </h2>
                 {cart.items.length > 0 && (
-                  <button className="text-sm font-semibold text-orange-500 hover:text-orange-600">Clear All</button>
+                  <button className="text-sm font-semibold text-orange-500 hover:text-orange-600">
+                    Clear All
+                  </button>
                 )}
               </div>
 
               {cart.items.length === 0 ? (
-                <p className="py-8 text-center text-gray-500">Your cart is empty</p>
+                <p className="py-8 text-center text-gray-500">
+                  Your cart is empty
+                </p>
               ) : (
                 <div className="space-y-6">
                   {cart.items.map((item) => (
-                    <div key={item.id} className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
+                    <div
+                      key={item.id}
+                      className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0"
+                    >
                       <div className="flex gap-6">
                         {item.image && (
                           <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg">
@@ -73,20 +84,32 @@ export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: Ca
                         )}
                         <div className="flex flex-1 items-center justify-between">
                           <div>
-                            <h3 className="font-semibold text-gray-900">{item.name}</h3>
-                            {item.description && <p className="text-sm text-gray-600">{item.description}</p>}
+                            <h3 className="font-semibold text-gray-900">
+                              {item.name}
+                            </h3>
+                            {item.description && (
+                              <p className="text-sm text-gray-600">
+                                {item.description}
+                              </p>
+                            )}
                           </div>
                           <div className="flex items-center gap-6">
                             <div className="flex items-center gap-2">
                               <button
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity - 1)
+                                }
                                 className="rounded border border-orange-500 p-1 text-orange-500 hover:bg-orange-50"
                               >
                                 <Minus size={16} />
                               </button>
-                              <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                              <span className="w-8 text-center font-semibold">
+                                {item.quantity}
+                              </span>
                               <button
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                onClick={() =>
+                                  updateQuantity(item.id, item.quantity + 1)
+                                }
                                 className="rounded border border-orange-500 p-1 text-orange-500 hover:bg-orange-50"
                               >
                                 <Plus size={16} />
@@ -113,27 +136,39 @@ export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: Ca
 
           {/* Right Column - Order Summary */}
           <div>
-            <div className="sticky top-8 space-y-6">
+            <div className="lg:sticky lg:top-8 space-y-6">
               {/* Order Summary */}
               <div className="rounded-lg bg-white p-6">
-                <h3 className="mb-6 text-xl font-bold text-gray-900">Order Summary</h3>
+                <h3 className="mb-6 text-xl font-bold text-gray-900">
+                  Order Summary
+                </h3>
                 <div className="space-y-4">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Item Total</span>
-                    <span className="font-semibold text-gray-900">Rs. {subtotal}</span>
+                    <span className="font-semibold text-gray-900">
+                      Rs. {subtotal}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Delivery Fee</span>
-                    <span className="font-semibold text-gray-900">Rs. {deliveryFee}</span>
+                    <span className="font-semibold text-gray-900">
+                      Rs. {deliveryFee}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">GST & Other Charges</span>
-                    <span className="font-semibold text-gray-900">Rs. {gstCharges}</span>
+                    <span className="font-semibold text-gray-900">
+                      Rs. {gstCharges}
+                    </span>
                   </div>
                   <div className="border-t border-gray-200 pt-4">
                     <div className="flex justify-between">
-                      <span className="font-semibold text-gray-900">To Pay</span>
-                      <span className="text-lg font-bold text-gray-900">Rs. {total}</span>
+                      <span className="font-semibold text-gray-900">
+                        To Pay
+                      </span>
+                      <span className="text-lg font-bold text-gray-900">
+                        Rs. {total}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -148,16 +183,24 @@ export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: Ca
                         {user.lastName.charAt(0)}
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">Hello, {user.firstName}</p>
-                        <p className="text-sm text-gray-600">You are logged in</p>
+                        <p className="font-semibold text-gray-900">
+                          Hello, {user.firstName}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          You are logged in
+                        </p>
                       </div>
                     </div>
-                    <button className="text-orange-500 hover:text-orange-600 font-semibold text-sm">Edit</button>
+                    <button className="text-orange-500 hover:text-orange-600 font-semibold text-sm">
+                      Edit
+                    </button>
                   </div>
                 </div>
               ) : (
                 <div className="rounded-lg border-2 border-gray-200 bg-white p-6 text-center">
-                  <p className="mb-4 text-gray-600">Your cart will be saved for you</p>
+                  <p className="mb-4 text-gray-600">
+                    Your cart will be saved for you
+                  </p>
                   <div className="flex gap-3">
                     <button
                       onClick={onLogin}
@@ -178,7 +221,7 @@ export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: Ca
               {/* Checkout Button */}
               <button
                 onClick={onCheckout}
-                className="w-full rounded-full bg-orange-500 px-6 py-3 font-bold text-white hover:bg-orange-600"
+                className="hidden lg:block w-full rounded-full bg-orange-500 px-6 py-3 font-bold text-white hover:bg-orange-600"
               >
                 Proceed to Checkout
               </button>
@@ -186,6 +229,15 @@ export default function CartPage({ onCheckout, onBackToRestaurant, onLogin }: Ca
           </div>
         </div>
       </div>
+      {/* Mobile Bottom Checkout */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 p-4 lg:hidden">
+        <button
+          onClick={onCheckout}
+          className="w-full rounded-full bg-orange-500 py-4 text-white font-bold text-lg"
+        >
+          Proceed to Checkout • ₹{total}
+        </button>
+      </div>
     </div>
-  )
+  );
 }
