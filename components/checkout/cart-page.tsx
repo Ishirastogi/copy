@@ -23,7 +23,7 @@ export default function CartPage({
   const total = subtotal + deliveryFee + gstCharges;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
@@ -46,10 +46,10 @@ export default function CartPage({
           {cart.restaurantName} / My Cart
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
           {/* Left Column - Cart Items */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="rounded-lg bg-white p-8">
+            <div className="rounded-lg bg-white p-4 sm:p-8">
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-gray-900">
                   Your Order ({cart.items.length} items)
@@ -72,7 +72,7 @@ export default function CartPage({
                       key={item.id}
                       className="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0"
                     >
-                      <div className="flex gap-6">
+                      <div className="flex gap-4 items-start">
                         {item.image && (
                           <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg">
                             <img
@@ -82,7 +82,7 @@ export default function CartPage({
                             />
                           </div>
                         )}
-                        <div className="flex flex-1 items-center justify-between">
+                        <div className="flex flex-1 flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                           <div>
                             <h3 className="font-semibold text-gray-900">
                               {item.name}
@@ -138,7 +138,7 @@ export default function CartPage({
           <div>
             <div className="lg:sticky lg:top-8 space-y-6">
               {/* Order Summary */}
-              <div className="rounded-lg bg-white p-6">
+              <div className="rounded-xl bg-white p-4 sm:p-6">
                 <h3 className="mb-6 text-xl font-bold text-gray-900">
                   Order Summary
                 </h3>

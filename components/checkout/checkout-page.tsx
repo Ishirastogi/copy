@@ -54,7 +54,7 @@ export default function CheckoutPage({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-28">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
@@ -81,7 +81,10 @@ export default function CheckoutPage({
           </button>
         )}
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div
+          className="grid gap-4 sm:p-6
+ grid-cols-1 lg:grid-cols-3"
+        >
           {/* Left Column - Checkout Steps */}
           <div className="lg:col-span-2">
             <div className="space-y-4">
@@ -94,7 +97,8 @@ export default function CheckoutPage({
                         expandedSection === "account" ? "" : "account"
                       )
                     }
-                    className="flex w-full items-center justify-between p-6"
+                    className="flex w-full items-center justify-between p-4 sm:p-6
+"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white font-semibold">
@@ -138,7 +142,10 @@ export default function CheckoutPage({
               ) : (
                 // Logged-in view with account info
                 <div className="rounded-lg border border-gray-200 bg-white">
-                  <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                  <div
+                    className="flex items-center justify-between p-4 sm:p-6
+ border-b border-gray-200"
+                  >
                     <div className="flex items-center gap-3">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white font-semibold">
                         ✓
@@ -148,7 +155,10 @@ export default function CheckoutPage({
                       </h2>
                     </div>
                   </div>
-                  <div className="p-6">
+                  <div
+                    className="p-4 sm:p-6
+"
+                  >
                     <p className="text-gray-900 font-semibold">
                       {user?.firstName} {user?.lastName}
                     </p>
@@ -165,7 +175,8 @@ export default function CheckoutPage({
                         expandedSection === "delivery" ? "" : "delivery"
                       )
                     }
-                    className="flex w-full items-center justify-between p-6"
+                    className="flex w-full items-center justify-between p-4 sm:p-6
+"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white font-semibold">
@@ -214,7 +225,8 @@ export default function CheckoutPage({
                         expandedSection === "cart" ? "" : "cart"
                       )
                     }
-                    className="flex w-full items-center justify-between p-6"
+                    className="flex w-full items-center justify-between p-4 sm:p-6
+"
                   >
                     <div className="flex items-center gap-4">
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-400 text-white font-semibold">
@@ -263,7 +275,7 @@ export default function CheckoutPage({
           {/* Right Column - Order Summary */}
           <div>
             <div className="lg:sticky lg:top-8 space-y-6">
-              <div className="rounded-lg bg-white p-4 sm:p-6">
+              <div className="rounded-xl bg-white p-4 sm:p-6 shadow-sm">
                 <h3 className="mb-6 text-xl font-bold text-gray-900">
                   Order Summary
                 </h3>
