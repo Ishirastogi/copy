@@ -11,7 +11,7 @@ export default function MenuSection({ title, items, onAddItem }: MenuSectionProp
 
   return (
     <div className="mb-6">
-      <h2 className="text-3xl font-serif font-medium text-gray-800 mb-6">
+     <h2 className="text-xl font-serif font-medium text-gray-800 mb-3">
         {title} <span className="text-xl text-gray-400 font-sans ml-1">({items.length})</span>
       </h2>
       <div className="flex flex-col">
